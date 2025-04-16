@@ -157,7 +157,7 @@ ggsave("Figures/plot_total_crimes.png", plot = plot_total_crimes,
 
 
 
-
+system("git remote -v")
 
 #####Regressions####
 
