@@ -204,7 +204,9 @@ num_total_crimes[, treat := as.integer(INCDATE >= cutoff_date)]
 rdd_data <- num_total_crimes[abs(running_var) <= 30 & !is.na(N)]
 Total_Crimes <- lm(N ~ treat + running_var, data = rdd_data)
  
+#Save
 
+modelsummary(model_list, output = "Tables/model_summary.tex")
 model_list <- list("Female Victims" = Female_Victims, "Female Offenders" = Female_Offenders,  "Domestic Homicides" = Domestic_Violence,  "Total Crimes" = Total_Crimes)
 
 modelsummary(model_list, stars = TRUE, title = "Regression Results: Household Income Determinants")
@@ -267,6 +269,4 @@ gtsave(table_gt, "Tables/model_summary_2.pdf")
 
 
 
-#Save
 
-modelsummary(model_list, output = "Tables/model_summary.tex")
