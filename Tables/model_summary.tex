@@ -1,0 +1,28 @@
+\begin{table}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+column{2,3,4,5}={}{halign=c,},
+column{1}={}{halign=l,},
+hline{8}={1,2,3,4,5}{solid, black, 0.05em},
+}                     %% tabularray inner close
+\toprule
+& Female Victims & Female Offenders & Domestic Homicides & Total Crimes \\ \midrule %% TinyTableHeader
+(Intercept) & \num{486.894} & \num{269.264} & \num{9.884} & \num{1262.322} \\
+& (\num{11.973}) & (\num{7.995}) & (\num{1.156}) & (\num{29.365}) \\
+treat & \num{35.434} & \num{16.125} & \num{-0.159} & \num{56.978} \\
+& (\num{21.140}) & (\num{14.117}) & (\num{2.041}) & (\num{51.850}) \\
+running\_var & \num{-0.332} & \num{-0.198} & \num{0.023} & \num{-0.506} \\
+& (\num{0.600}) & (\num{0.401}) & (\num{0.058}) & (\num{1.472}) \\
+Num.Obs. & \num{61} & \num{61} & \num{61} & \num{61} \\
+R2 & \num{0.094} & \num{0.038} & \num{0.007} & \num{0.044} \\
+R2 Adj. & \num{0.063} & \num{0.005} & \num{-0.027} & \num{0.011} \\
+AIC & \num{631.9} & \num{582.6} & \num{346.7} & \num{741.4} \\
+BIC & \num{640.3} & \num{591.1} & \num{355.1} & \num{749.8} \\
+Log.Lik. & \num{-311.948} & \num{-287.317} & \num{-169.347} & \num{-366.677} \\
+RMSE & \num{40.24} & \num{26.87} & \num{3.89} & \num{98.71} \\
+\bottomrule
+\end{tblr}
+\end{table}
