@@ -2,6 +2,7 @@ library(data.table)
 library(ggplot2)
 library(rdrobust)
 library(modelsummary)
+library(gt)
 install.packages("rdrobust")
 
 ####Statistics pre-post August 25, 2022
@@ -144,7 +145,7 @@ plot_total_crimes <- ggplot(num_total_crimes, aes(x = INCDATE, y = N)) +
       "Formal Judgment" = "purple"
     )
   ) +
-  labs(title = "Number of Domestic Violence Homicides with Female Victims by Date",
+  labs(title = "Total number of incidents by Date",
        x = "Date",
        y = "Number of Incidents") +
   theme_minimal()
@@ -212,3 +213,63 @@ modelsummary(model_list, stars = TRUE, title = "Regression Results: Household In
 #Save
 
 modelsummary(model_list, output = "Tables/model_summary.tex")
+table_gt <- modelsummary(model_list, output = "gt")
+gtsave(table_gt, "Tables/model_summary.pdf")
+
+
+###2,5 months bandwidth 
+
+##Victims
+num_fem_vic[, INCDATE := as.Date(INCDATE)]
+cutoff_date <- as.Date("2022-08-25")
+
+num_fem_vic[, running_var := as.numeric(INCDATE - cutoff_date)]
+num_fem_vic[, treat := as.integer(INCDATE >= cutoff_date)]
+rdd_data <- num_fem_vic[abs(running_var) <= 75 & !is.na(N)]
+Female_Victims <- lm(N ~ treat + running_var, data = rdd_data)
+
+##Offenders
+
+num_fem_off[, INCDATE := as.Date(INCDATE)]
+cutoff_date <- as.Date("2022-08-25")
+
+num_fem_off[, running_var := as.numeric(INCDATE - cutoff_date)]
+num_fem_off[, treat := as.integer(INCDATE >= cutoff_date)]
+rdd_data <- num_fem_off[abs(running_var) <= 75 & !is.na(N)]
+Female_Offenders <- lm(N ~ treat + running_var, data = rdd_data)
+
+##Domestic violence
+
+num_dom_violence[, INCDATE := as.Date(INCDATE)]
+cutoff_date <- as.Date("2022-08-25")
+
+num_dom_violence[, running_var := as.numeric(INCDATE - cutoff_date)]
+num_dom_violence[, treat := as.integer(INCDATE >= cutoff_date)]
+rdd_data <- num_dom_violence[abs(running_var) <= 75 & !is.na(N)]
+Domestic_Violence <- lm(N ~ treat + running_var, data = rdd_data)
+
+
+##Total crimes
+
+num_total_crimes[, INCDATE := as.Date(INCDATE)]
+cutoff_date <- as.Date("2022-08-25")
+
+num_total_crimes[, running_var := as.numeric(INCDATE - cutoff_date)]
+num_total_crimes[, treat := as.integer(INCDATE >= cutoff_date)]
+
+rdd_data <- num_total_crimes[abs(running_var) <= 75 & !is.na(N)]
+Total_Crimes <- lm(N ~ treat + running_var, data = rdd_data)
+ 
+
+model_list <- list("Female Victims" = Female_Victims, "Female Offenders" = Female_Offenders,  "Domestic Homicides" = Domestic_Violence,  "Total Crimes" = Total_Crimes)
+
+modelsummary(model_list, stars = TRUE, title = "Regression Results: Household Income Determinants")
+
+
+#Save
+
+modelsummary(model_list, output = "Tables/model_summary_2.tex")
+table_gt <- modelsummary(model_list, output = "gt")
+gtsave(table_gt, "Tables/model_summary_2.pdf")
+
+
