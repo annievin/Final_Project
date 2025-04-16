@@ -56,7 +56,7 @@ plot_fem_vic <- ggplot(num_fem_vic, aes(x = INCDATE, y = N)) +
 ggsave("Figures/female_victim_scatterplot.png", plot = plot_fem_vic,
        width = 8, height = 5, dpi = 300)
 
-##Crimes committed by female offenders
+###Crimes committed by female offenders
 
 filtered[, female_offender := fifelse(
   offender_sex_1 == 0 | offender_sex_2 == 0 | offender_sex_3 == 0, 1, 0)]
